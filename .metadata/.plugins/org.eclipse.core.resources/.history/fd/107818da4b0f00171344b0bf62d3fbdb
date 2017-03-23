@@ -1,0 +1,79 @@
+import org.apache.jena.query.*;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.RDFNode;
+
+public class Test {
+	private static String type = "ttl";
+	
+	//Query 1: What sensors do you have? 
+	private static String query1 = "PREFIX ssn: <http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#>"
+			+"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>"
+			+ "SELECT ?sensors "
+			+ "Where{"
+			+ "?sensors a ssn:Sensor}";
+	
+	//Query 2: Get me one particular sensor reading ? 		
+	private static String query2 = "PREFIX DUL:   <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl/>"
+			+ "SELECT ?measurement "
+			+ "Where {"
+			+ "<http://www.sensordescription.de/inrdf/SensorTemp> DUL:hasDataValue ?measurement}"; 
+	
+	//Query 3: Explain it (previous Node) further
+	private static String query3 = "SELECT ?y ?z "
+			+ "Where {"
+			+ "_:b0 ?y ?z}";
+		
+	
+	
+	public static void main(String args[]){
+		/**
+		 * 
+		 * 1) Sample fastRDF description
+		 * 2) RDF Literal? 
+		 * 3) Solve it locally using a function...  
+		 * */
+		String fileName = "observations";
+		Model m = loadModel(fileName);
+		
+		m.write(System.out, "TTL") ;
+		//Run Query1 to find available sensors
+		ResultSet results = runQuery(query1, m);		
+		ResultSetFormatter.out(results);
+		
+		//Query2 output is an anonymous node itself. 
+		
+		ResultSet results2 = runQuery(query2, m);
+		ResultSetFormatter.out(results2);
+		
+		//So far it works till we get an anonymous Node. 
+		
+		
+	}
+	
+	public static Model loadModel(String name){
+		Model mod = ModelFactory.createDefaultModel();
+		String filename = name+'.'+ type;
+		mod.read(filename);
+		return mod;
+	}
+	
+	//Takes Query and Model
+	public static ResultSet runQuery(String query, Model m){
+		try (QueryExecution qexec = QueryExecutionFactory.create(query, m)) {
+			  ResultSet results = qexec.execSelect() ;
+			  {
+				  QuerySolution soln = results.nextSolution() ;
+				  for(;results.hasNext();){
+					  if(results.toString().startsWith("_")){ // A blank Node
+						  /*
+						   * Check if its a fastRDF node, if yes the reply appropriately with published value
+						   * */
+					  }
+				  }
+			  }
+		      results = ResultSetFactory.copyResults(results) ;
+		      return results ;    // Passes the result set out of the try-resources
+		  }
+	}
+}

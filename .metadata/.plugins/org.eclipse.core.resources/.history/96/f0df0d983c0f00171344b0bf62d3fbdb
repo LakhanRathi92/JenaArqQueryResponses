@@ -1,0 +1,32 @@
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+
+public class Test {
+	public String type = "ttl";
+	
+	public static void main(String args[]){
+		/**
+		 * 
+		 * 1) Sample fastRDF description
+		 * 2) RDF Literal? 
+		 * 3) Solve it locally using a function...  
+		 * */
+		String fileName = "observations";
+		Model m = loadModel(fileName);
+		
+		
+	}
+	
+	public static Model loadModel(String name){
+		Model mod = ModelFactory.createDefaultModel();
+		String filename = name+'.'+type;
+		mod.read("observations");
+		
+		return null;
+	}
+	
+	public String resolver(){
+		
+		return null;
+	}
+}

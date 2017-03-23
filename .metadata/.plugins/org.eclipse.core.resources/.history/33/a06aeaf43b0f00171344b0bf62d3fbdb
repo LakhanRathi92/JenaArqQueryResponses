@@ -1,0 +1,26 @@
+
+public class Test {
+	
+	
+	
+	public static void main(String args[]){
+		
+		/**
+		 * 
+		 * 1) Sample fastRDF description
+		 * 2) RDF Literal? 
+		 * 3) Solve it locally using a function...  
+		 * */
+		
+		
+	}
+	
+	public loadModel(){
+		
+	}
+	
+	public String resolver(){
+		
+		return null;
+	}
+}

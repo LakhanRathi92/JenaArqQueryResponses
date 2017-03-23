@@ -1,0 +1,27 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ssn: <http://www.w3.org/2005/Incubator/ssn/ssnx/ssn#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix	DUL: <http://www.ontologydesignpatterns.org/ont/dul/DUL.owl/> .
+@prefix pubProDesc: <http://www.sensordescription.de/inrdf/> .
+@prefix fastRDF: <http://www.dfki.de/fastRDF/> .
+
+#introduce DUL for ssn:SensorOutput
+#Describes: A proximity sensor with ssn description
+#[] describes an anonymous object, interpreting it is a job of 
+#our Broker
+
+pubProDesc:SensorTemp a ssn:Sensor ;
+					  DUL:isClassifiedBy "Celsius" ;
+					  DUL:hasDataValue [
+					  a fastRDF:float;
+					  fastRDF:constantLiteral "false"^^xsd:boolean;
+					  fastRDF:uid "8543"^^xsd:integer 	
+					  ] .
+					  
+					  
+							 
+
+
+
+
+
