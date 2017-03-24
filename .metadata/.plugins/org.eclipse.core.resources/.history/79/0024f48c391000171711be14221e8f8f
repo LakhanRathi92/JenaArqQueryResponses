@@ -1,11 +1,9 @@
 import java.util.Iterator;
 
 import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
@@ -34,7 +32,7 @@ public class Test {
 			+ "Where {"
 			+ "_:b0 ?y ?z}";
 	
-	private static String fastRDF = "http://www.dfki.de/fastRDF/uid";
+	private static Property fastRDF = new PropertyImpl("http://www.dfki.de/fastRDF/uid/");
 		
 	private static float publishedValue = (float) 23.0;
 	
@@ -48,16 +46,16 @@ public class Test {
 		String fileName = "observations";
 		Model m = loadModel(fileName);
 		
-		//m.write(System.out, "TTL") ;
+		m.write(System.out, "TTL") ;
 		
 		//Run Query1 to find available sensors
 		ResultSetRewindable results = runQuery(query1, m);		
-		//ResultSetFormatter.out(results);
+		ResultSetFormatter.out(results);
 		
 		//Query2 output is an anonymous node itself, if not handled by our routine 
 		
 		ResultSetRewindable results2 = runQuery(query2, m);
-		//ResultSetFormatter.out(results2);
+		ResultSetFormatter.out(results2);
 		results2.reset();
 		
 		
@@ -74,20 +72,8 @@ public class Test {
 		    		  StmtIterator a = r.listProperties();
 		    		  while(a.hasNext()){
 		    			  Statement state = a.next();
-		    	    	  //So here I can see whether the said statement has fastRDF stuff
-		    			  //Check if it has a fastRDF:UID if so reply from 
-		    			  //payload, on next publish event.
-		    			//DEBNG
-		    			//Property uid = state.getPredicate();
-		    			//System.out.println("predicate " + uid.getURI());
-	    				//Literal fastRDFuid = state.getLiteral();
-	    				//System.out.println("literal " + fastRDFuid.getLexicalForm());
-		    			  Property uid = state.getPredicate();
-		    			  String uidRef = uid.getURI();
-		    			  if(uidRef.equals(fastRDF)){
-		    				  Literal fastRDFuid = state.getLiteral();
-		    				  System.out.println("Found fastRDF UID " + fastRDFuid.getValue());
-		    			  }
+		    			  System.out.println("a");
+				    	  //So here I can see whether the said statement has fastRDF stuff	
 		    		  }
 		    	  }
 		      }

@@ -84,10 +84,7 @@ public class Test {
 	    				//System.out.println("literal " + fastRDFuid.getLexicalForm());
 		    			  Property uid = state.getPredicate();
 		    			  String uidRef = uid.getURI();
-		    			  if(uidRef.equals(fastRDF)){
-		    				  Literal fastRDFuid = state.getLiteral();
-		    				  System.out.println("Found fastRDF UID " + fastRDFuid.getValue());
-		    			  }
+		    			  if(uidRef.equals(fastRDF))
 		    		  }
 		    	  }
 		      }

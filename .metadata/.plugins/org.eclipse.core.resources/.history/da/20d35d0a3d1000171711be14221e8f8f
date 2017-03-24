@@ -86,7 +86,7 @@ public class Test {
 		    			  String uidRef = uid.getURI();
 		    			  if(uidRef.equals(fastRDF)){
 		    				  Literal fastRDFuid = state.getLiteral();
-		    				  System.out.println("Found fastRDF UID " + fastRDFuid.getValue());
+		    				  System.out.println("Found fastRDF UID " + );
 		    			  }
 		    		  }
 		    	  }

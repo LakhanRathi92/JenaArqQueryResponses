@@ -34,7 +34,7 @@ public class Test {
 			+ "Where {"
 			+ "_:b0 ?y ?z}";
 	
-	private static String fastRDF = "http://www.dfki.de/fastRDF/uid";
+	private static Property fastRDF = new PropertyImpl("http://www.dfki.de/fastRDF/uid/");
 		
 	private static float publishedValue = (float) 23.0;
 	
@@ -77,17 +77,10 @@ public class Test {
 		    	    	  //So here I can see whether the said statement has fastRDF stuff
 		    			  //Check if it has a fastRDF:UID if so reply from 
 		    			  //payload, on next publish event.
-		    			//DEBNG
-		    			//Property uid = state.getPredicate();
-		    			//System.out.println("predicate " + uid.getURI());
-	    				//Literal fastRDFuid = state.getLiteral();
-	    				//System.out.println("literal " + fastRDFuid.getLexicalForm());
-		    			  Property uid = state.getPredicate();
-		    			  String uidRef = uid.getURI();
-		    			  if(uidRef.equals(fastRDF)){
-		    				  Literal fastRDFuid = state.getLiteral();
-		    				  System.out.println("Found fastRDF UID " + fastRDFuid.getValue());
-		    			  }
+		    			Property uid = state.getPredicate();
+		    			System.out.println(uid.getURI());
+	    				Literal fastRDFuid = state.getLiteral();
+	    				System.out.println(fastRDFuid.getLexicalForm());
 		    		  }
 		    	  }
 		      }

@@ -34,7 +34,7 @@ public class Test {
 			+ "Where {"
 			+ "_:b0 ?y ?z}";
 	
-	private static String fastRDF = "http://www.dfki.de/fastRDF/uid";
+	private static String fastRDF = "http://www.dfki.de/fastRDF/uid/";
 		
 	private static float publishedValue = (float) 23.0;
 	
@@ -84,10 +84,7 @@ public class Test {
 	    				//System.out.println("literal " + fastRDFuid.getLexicalForm());
 		    			  Property uid = state.getPredicate();
 		    			  String uidRef = uid.getURI();
-		    			  if(uidRef.equals(fastRDF)){
-		    				  Literal fastRDFuid = state.getLiteral();
-		    				  System.out.println("Found fastRDF UID " + fastRDFuid.getValue());
-		    			  }
+		    			  
 		    		  }
 		    	  }
 		      }
