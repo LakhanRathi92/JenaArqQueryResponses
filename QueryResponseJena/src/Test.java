@@ -1,13 +1,13 @@
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.jena.query.*;
-import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.RDFNode;
+import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.sparql.core.Var;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.rdf.model.impl.PropertyImpl;
 
 public class Test {
 	private static String type = "ttl";
@@ -25,12 +25,14 @@ public class Test {
 			+ "Where {"
 			+ "<http://www.sensordescription.de/inrdf/SensorTemp> DUL:hasDataValue ?measurement}"; 
 	
-	//Query 3: Explain it (previous Node) further
+	//Query 3: Explain it (previous Node) further (works fine)
+	//But Chris said to not make subscriber query any further. 
+	
 	private static String fastRDFQuery = "SELECT ?y ?z "
 			+ "Where {"
 			+ "_:b0 ?y ?z}";
 	
-	
+	private static Property fastRDF = new PropertyImpl("http://www.dfki.de/fastRDF/uid/");
 		
 	private static float publishedValue = (float) 23.0;
 	
@@ -47,15 +49,36 @@ public class Test {
 		m.write(System.out, "TTL") ;
 		
 		//Run Query1 to find available sensors
-		ResultSet results = runQuery(query1, m);		
+		ResultSetRewindable results = runQuery(query1, m);		
 		ResultSetFormatter.out(results);
 		
 		//Query2 output is an anonymous node itself, if not handled by our routine 
 		
-		ResultSet results2 = runQuery(query2, m);
+		ResultSetRewindable results2 = runQuery(query2, m);
 		ResultSetFormatter.out(results2);
-	
-	
+		results2.reset();
+		
+		
+		for ( ; results2.hasNext() ; )
+		  {
+			  QuerySolution soln = results2.next() ;
+		      Iterator<String> x = soln.varNames();
+		      while(x.hasNext()){
+		    	  String Col = x.next();
+		    	  Resource r = soln.getResource(Col);
+		    	  if(r.isAnon())
+		    	  {
+		    		  System.out.println("Identified Blank Node");
+		    		  StmtIterator a = r.listProperties();
+		    		  while(a.hasNext()){
+		    			  Statement state = a.next();
+		    			  System.out.println("a");
+				    	  //So here I can see whether the said statement has fastRDF stuff	
+		    		  }
+		    	  }
+		      }
+		  }
+		
 	}
 	
 	public static Model loadModel(String name){
@@ -66,7 +89,7 @@ public class Test {
 	}
 	
 	//Takes Query and Model
-	public static ResultSet runQuery(String query, Model m){
+	public static ResultSetRewindable  runQuery(String query, Model m){
 	/*	try (QueryExecution qexec = QueryExecutionFactory.create(query, m)) {
 			  ResultSet results = qexec.execSelect() ;
 			  ResultSet resultXX = ResultSetFactory.copyResults(results) ;
@@ -82,8 +105,11 @@ public class Test {
 		QueryExecution qexec = QueryExecutionFactory.create(query, m) ;
 		ResultSet results = qexec.execSelect() ;
 		results = ResultSetFactory.copyResults(results);
-		List<String> res = results.getResultVars();
-		return results;
+		//List<String> res = results.getResultVars(); //Column name
+		
+	
+		
+		return (ResultSetRewindable) results;
 	}
 	
 	//we pass the standard query to resovle fastRDF description, with the blank Node ID
@@ -100,7 +126,6 @@ public class Test {
 		      String uid = ResultSetFormatter.asText(results);
 		      lookUP(uid);
 		  }
-		
 		return false;
 	}
 	
